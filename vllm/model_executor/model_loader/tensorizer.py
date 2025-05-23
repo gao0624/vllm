@@ -15,7 +15,8 @@ from transformers import PretrainedConfig
 import vllm.envs as envs
 from vllm.config import ModelConfig, ParallelConfig
 from vllm.engine.arg_utils import EngineArgs
-from vllm.engine.llm_engine import LLMEngine
+
+
 from vllm.logger import init_logger
 from vllm.model_executor.layers.quantization.base_config import (
     QuantizationConfig)
@@ -151,6 +152,7 @@ class TensorizerArgs:
   """
 
     def __post_init__(self):
+        from vllm.engine.llm_engine import LLMEngine
         self.file_obj = self.tensorizer_uri
         self.s3_access_key_id = self.s3_access_key_id or envs.S3_ACCESS_KEY_ID
         self.s3_secret_access_key = (self.s3_secret_access_key

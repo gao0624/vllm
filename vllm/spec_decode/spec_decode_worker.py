@@ -87,6 +87,7 @@ def create_spec_worker(*args, **kwargs) -> "SpecDecodeWorker":
         return spec_decode_worker
 
     # ----------- 单级 draft 兼容分支（与你给的代码一致） -----------
+    print("---exec this----")
     draft_worker_kwargs = kwargs.copy()
     kwargs["model_runner_cls"] = TargetModelRunner
     target_worker = Worker(*args, **kwargs)
@@ -641,7 +642,7 @@ class SpecDecodeWorker(LoraNotSupportedWorkerBase):
         self.previous_hidden_states = None
 
         with Timer() as proposal_timer:
-            # Generate proposals using draft worker.
+            # Generate proposals using draft worker.  生成草稿的
             proposals = self.proposer_worker.get_spec_proposals(
                 execute_model_req, self._seq_with_bonus_token_in_last_step)
 
@@ -701,7 +702,7 @@ class SpecDecodeWorker(LoraNotSupportedWorkerBase):
         # Get probabilities of target model, including bonus tokens.
         proposal_verifier_probs = proposal_scores.probs[spec_indices]
 
-        # Get non-speculative sampled tokens from target model.
+        # Get non-speculative sampled tokens from target model. target模型补全的token
         non_spec_token_ids = proposal_scores.token_ids[non_spec_indices]
 
         # Get bonus tokens from target model.
